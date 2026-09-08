@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocab Matching Game - Học Từ Vựng IT</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-brand">🎮 Vocab Match</div>
+    <div class="navbar-tabs">
+      <button class="tab-btn active" data-tab="view-game">🎮 Chơi Game</button>
+      <button class="tab-btn" data-tab="view-review">📅 Ôn tập</button>
+      <button class="tab-btn" data-tab="view-mastered">📝 Đã thuộc</button>
+      <button class="tab-btn" data-tab="view-stats">📊 Thống kê</button>
+    </div>
+  </nav>
+
+  <main id="app-content">
+    <!-- TAB 1: GAME VIEW -->
+    <div id="view-game" class="view active">
+      <!-- Control bar -->
+      <div class="control-bar">
+        <label><input type="checkbox" id="toggle-definition"> Hiện mô tả ý nghĩa</label>
+        <label style="display:flex;align-items:center;gap:8px;">Số từ/lượt: 
+          <input type="number" id="wpr-input" min="1" max="100" style="width:60px;padding:4px;border-radius:4px;background:#1e293b;color:white;border:1px solid #334155;">
+        </label>
+        <span id="score-display">Score: 0/50</span>
+        <div style="display:flex;gap:8px">
+          <button id="btn-new-round" class="btn btn-primary">🔄 Lượt mới</button>
+          <button id="btn-replay" class="btn btn-secondary">🔁 Chơi lại</button>
+        </div>
+      </div>
+      
+      <!-- Game board: 2 columns -->
+      <div class="game-board">
+        <div class="column column-en" id="column-en">
+          <h3>🇬🇧 English Word</h3>
+          <div id="cards-en" class="cards-container"></div>
+        </div>
+        <div class="column column-vi" id="column-vi">
+          <h3>🇻🇳 Nghĩa Tiếng Việt</h3>
+          <div id="cards-vi" class="cards-container"></div>
+        </div>
+      </div>
+      
+      <!-- Learned this round -->
+      <div class="learned-section">
+        <h3>✅ Đã nối đúng lượt này</h3>
+        <div id="learned-list" class="learned-list"></div>
+      </div>
+    </div>
+    
+    <!-- TAB 2: REVIEW VIEW -->
+    <div id="view-review" class="view">
+      <h2>📅 Ôn tập hôm nay</h2>
+      <p id="review-info"></p>
+      <div id="review-card-container"></div>
+      <div id="review-empty" style="display:none">
+        <p>🎉 Không có từ nào cần ôn tập hôm nay!</p>
+      </div>
+    </div>
+    
+    <!-- TAB 3: MASTERED VIEW -->
+    <div id="view-mastered" class="view">
+      <div class="mastered-header">
+        <h2>📝 Đã thuộc (<span id="mastered-count">0</span> từ)</h2>
+        <div class="mastered-actions">
+          <input type="text" id="search-mastered" placeholder="Tìm kiếm...">
+          <button id="btn-export" class="btn btn-secondary">📥 Xuất JSON</button>
+          <label class="btn-import btn btn-secondary">📤 Nhập JSON<input type="file" id="btn-import-file" accept=".json" hidden></label>
+        </div>
+      </div>
+      <div id="mastered-list" class="mastered-list"></div>
+    </div>
+    
+    <!-- TAB 4: STATS VIEW -->
+    <div id="view-stats" class="view">
+      <h2>📊 Thống kê học tập</h2>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Tổng từ vựng</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-new">0</div><div class="stat-label">Chưa học</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-learning">0</div><div class="stat-label">Đang học</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-mastered">0</div><div class="stat-label">Đã thuộc</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-streak">0🔥</div><div class="stat-label">Chuỗi ngày</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-due">0</div><div class="stat-label">Cần ôn tập</div></div>
+      </div>
+      <div class="progress-section">
+        <h3>Tiến độ tổng thể</h3>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <span id="progress-label">0%</span>
+      </div>
+      <div class="group-breakdown">
+        <h3>Phân bố theo nhóm</h3>
+        <div id="group-stats"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Confirmation modal -->
+  <div id="modal-overlay" class="modal-overlay" style="display:none">
+    <div class="modal">
+      <p id="modal-message"></p>
+      <div class="modal-actions">
+        <button id="modal-confirm" class="btn btn-primary">Xác nhận</button>
+        <button id="modal-cancel" class="btn btn-secondary">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/vocab_data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/spaced.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
