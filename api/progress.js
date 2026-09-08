@@ -14,25 +14,25 @@ module.exports = async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      // Load progress from Vercel Blob
       const { blobs } = await list({ prefix: BLOB_PATH });
 
       if (blobs.length === 0) {
         return res.status(200).json({ progress: null });
       }
 
-      const blobUrl = blobs[0].url;
+      // Hỗ trợ đọc file từ kho Private (dùng downloadUrl)
+      const blobUrl = blobs[0].downloadUrl || blobs[0].url;
       const response = await fetch(blobUrl);
       const data = await response.json();
 
       return res.status(200).json({ progress: data });
 
     } else if (req.method === 'POST') {
-      // Save progress to Vercel Blob
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
+      // Cho phép ghi vào kho Private
       const blob = await put(BLOB_PATH, JSON.stringify(body), {
-        access: 'public',
+        access: 'private', 
         addRandomSuffix: false,
       });
 
